@@ -8,9 +8,9 @@ import math
 import pandas as pd
 import flask
 import dash
-import dash_core_components as dcc
-import dash_html_components as html
-import plotly.plotly as py
+from dash import dcc
+from dash import html
+import chart_studio.plotly as py
 import plotly.graph_objs as go
 
 from dash.dependencies import Input, Output, State
@@ -1377,7 +1377,7 @@ def update_order_table(orders, position):
     ]
 
     # If there are no orders
-    if orders is None or orders is "[]":
+    if orders == None or orders == "[]":
         return [
             html.Table(html.Tr(children=[html.Th(title) for title in headers])),
             html.Div(
@@ -1435,7 +1435,7 @@ def update_close_dropdown(orders):
 # Callback to update Top Bar values
 @app.callback(Output("top_bar", "children"), [Input("orders", "children")])
 def update_top_bar(orders):
-    if orders is None or orders is "[]":
+    if orders is None or orders == "[]":
         return get_top_bar()
 
     orders = json.loads(orders)

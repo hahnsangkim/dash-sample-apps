@@ -1,4 +1,4 @@
-import dash_html_components as html
+from dash import html
 from utils import Header, make_dash_table
 import pandas as pd
 import pathlib

@@ -5,8 +5,8 @@ import pandas as pd
 import numpy as np
 
 import dash
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import dcc
+from dash import html
 import plotly.graph_objs as go
 from dash.dependencies import Input, Output, State
 
@@ -583,7 +583,7 @@ def update_bar(map_selected_data, tern_selected_data, op_select):
         Input("operator-select", "value"),
         Input("ternary-layer-select", "value"),
     ],
-    state=[State("ternary-map", "figure")],
+    [State("ternary-map", "figure")],
 )
 def update_ternary_map(
     map_selected_data,

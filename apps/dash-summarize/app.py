@@ -1,8 +1,8 @@
 import time
 
 import dash
-import dash_html_components as html
-import dash_core_components as dcc
+from dash import html
+from dash import dcc
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State
 from transformers import BartTokenizer, BartForConditionalGeneration

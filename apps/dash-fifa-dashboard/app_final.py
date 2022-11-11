@@ -1,15 +1,8 @@
-import dash
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import Dash, dcc, html, Input, Output, dash_table
 import plotly.graph_objects as go
 import plotly.express as px
 import pandas as pd
 import numpy as np
-import dash_table
-from dash_table import DataTable
-import dash_core_components as dcc
-import dash_html_components as html
-from dash.dependencies import Input, Output
 import dash_bootstrap_components as dbc
 
 # Dataset Processing
@@ -203,7 +196,7 @@ age_slider = dcc.RangeSlider(
 
 ########Dash App Layout##########################
 
-app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 server = app.server
 
@@ -245,11 +238,11 @@ navbar = dbc.Navbar(
 
 controls_player_1 = dbc.Card(
     [
-        dbc.FormGroup(
+        html.Div(
             [
-                html.Label("Choose an old-school Player:"),
-                html.Br(),
-                dropdown_player_over_25,
+                dbc.Row(dbc.Col(html.Label("Choose a Quant Player:"), width="12")),
+                # html.Br(),
+                dbc.Row(dbc.Col(dropdown_player_over_25, width="12"))
             ]
         ),
     ],
@@ -259,11 +252,11 @@ controls_player_1 = dbc.Card(
 
 controls_player_2 = dbc.Card(
     [
-        dbc.FormGroup(
+        html.Div(
             [
-                html.Label("Choose a new generation Player:"),
-                html.Br(),
-                dropdown_player_under_25,
+                dbc.Row(dbc.Col(html.Label("Choose an AI Player:"), width="12")),
+                # html.Br(),
+                dbc.Row(dbc.Col(dropdown_player_under_25, width="12"))
             ]
         ),
     ],
@@ -273,14 +266,15 @@ controls_player_2 = dbc.Card(
 
 controls = dbc.Card(
     [
-        dbc.FormGroup(
-            [html.Label("Choose an Attribute:"), html.Br(), metric1_dropdown,]
-        ),
-        dbc.FormGroup(
-            [html.Label("Choose an Attribute:"), html.Br(), metric2_dropdown,]
-        ),
-        dbc.FormGroup(
-            [html.Label("Choose an Attribute:"), html.Br(), metric3_dropdown]
+        html.Div(
+            [
+                dbc.Row(dbc.Col(html.Label("Choose an Attribute:"), width="12")),
+                dbc.Row(dbc.Col(metric1_dropdown, width="12")),
+                dbc.Row(dbc.Col(html.Label("Choose an Attribute:"), width="12")),
+                dbc.Row(dbc.Col(metric2_dropdown, width="12")),
+                dbc.Row(dbc.Col(html.Label("Choose an Attribute:"), width="12")),
+                dbc.Row(dbc.Col(metric3_dropdown, width="12")),
+            ]
         ),
     ],
     body=True,
@@ -289,21 +283,14 @@ controls = dbc.Card(
 
 controls_club = dbc.Card(
     [
-        dbc.FormGroup(
-            [html.Label("Choose a League:"), html.Br(), metric_club_dropdown1,]
-        ),
-        dbc.FormGroup(
+        html.Div(
             [
-                html.Label("Choose an attribute for x:"),
-                html.Br(),
-                metric_scatter_dropdown1,
-            ]
-        ),
-        dbc.FormGroup(
-            [
-                html.Label("Choose an attribute for y:"),
-                html.Br(),
-                metric_scatter_dropdown2,
+                dbc.Row(dbc.Col(html.Label("Choose a League:"), width="12")),
+                dbc.Row(dbc.Col(metric_club_dropdown1, width="12")),
+                dbc.Row(dbc.Col(html.Label("Choose an attribute for x:"), width="12")),
+                dbc.Row(dbc.Col(metric_scatter_dropdown1, width="12")),
+                dbc.Row(dbc.Col(html.Label("Choose an attribute for y:"), width="12")),
+                dbc.Row(dbc.Col(metric_scatter_dropdown2, width="12")),
             ]
         ),
     ],
@@ -311,127 +298,152 @@ controls_club = dbc.Card(
     className="controls",
 )
 
-cards_1 = dbc.CardDeck(
+cards_1 = dbc.Row(
     [
-        dbc.Card(
-            dbc.CardBody(
-                [
-                    html.Div("Position", className="card-title1"),
-                    html.Div(id="P_position1", className="card_info1"),
-                ]
+        dbc.Col(
+            dbc.Card(
+                dbc.CardBody(
+                    [
+                        html.Div("Position", className="card-title1"),
+                        html.Div(id="P_position1", className="card_info1"),
+                    ]
+                ),
+                className="attributes_card",
             ),
-            className="attributes_card",
         ),
-        dbc.Card(
-            dbc.CardBody(
-                [
-                    html.Div("Value", className="card-title1"),
-                    html.Div(id="P_value1", className="card_info1"),
-                ]
+        dbc.Col(
+            dbc.Card(
+                dbc.CardBody(
+                    [
+                        html.Div("Value", className="card-title1"),
+                        html.Div(id="P_value1", className="card_info1"),
+                    ]
+                ),
+                className="attributes_card",
             ),
-            className="attributes_card",
         ),
-        dbc.Card(
-            dbc.CardBody(
-                [
-                    html.Div("Skill moves", className="card-title1"),
-                    html.Div(id="P_skill1", className="card_info1"),
-                ]
+        dbc.Col(
+            dbc.Card(
+                dbc.CardBody(
+                    [
+                        html.Div("Skill moves", className="card-title1"),
+                        html.Div(id="P_skill1", className="card_info1"),
+                    ]
+                ),
+                className="attributes_card",
             ),
-            className="attributes_card",
         ),
-        dbc.Card(
-            dbc.CardBody(
-                [
-                    html.Div("Prefer foot", className="card-title1"),
-                    html.Div(id="P_foot1", className="card_info1"),
-                ]
+        dbc.Col(
+            dbc.Card(
+                dbc.CardBody(
+                    [
+                        html.Div("Prefer foot", className="card-title1"),
+                        html.Div(id="P_foot1", className="card_info1"),
+                    ]
+                ),
+                className="attributes_card",
             ),
-            className="attributes_card",
+        )
+    ]
+)
+
+cards_2 = dbc.Row(
+    [
+        dbc.Col(
+            dbc.Card(
+                dbc.CardBody(
+                    [
+                        html.Div("Prefer foot", className="card-title2"),
+                        html.Div(id="P_foot2", className="card_info2"),
+                    ]
+                ),
+                className="attributes_card",
+            )
+        ),
+        dbc.Col(
+            dbc.Card(
+                dbc.CardBody(
+                    [
+                        html.Div("Skill moves", className="card-title2"),
+                        html.Div(id="P_skill2", className="card_info2"),
+                    ]
+                ),
+                className="attributes_card",
+            )
+        ),
+        dbc.Col(
+            dbc.Card(
+                dbc.CardBody(
+                    [
+                        html.Div("Value", className="card-title2"),
+                        html.Div(id="P_value2", className="card_info2"),
+                    ]
+                ),
+                className="attributes_card",
+            )
+        ),
+        dbc.Col(
+            dbc.Card(
+                dbc.CardBody(
+                    [
+                        html.Div("Position", className="card-title2"),
+                        html.Div(id="P_position2", className="card_info2"),
+                    ]
+                ),
+                className="attributes_card",
+            )
         ),
     ]
 )
-cards_2 = dbc.CardDeck(
+cards_3 = dbc.Row(
     [
-        dbc.Card(
-            dbc.CardBody(
-                [
-                    html.Div("Prefer foot", className="card-title2"),
-                    html.Div(id="P_foot2", className="card_info2"),
-                ]
-            ),
-            className="attributes_card",
+        dbc.Col(
+            dbc.Card(
+                dbc.CardBody(
+                    [
+                        html.Div("Potential", className="card-title1"),
+                        dcc.Graph(id="graph_example_1"),
+                    ]
+                ),
+                className="attributes_card",
+            )
         ),
-        dbc.Card(
-            dbc.CardBody(
-                [
-                    html.Div("Skill moves", className="card-title2"),
-                    html.Div(id="P_skill2", className="card_info2"),
-                ]
-            ),
-            className="attributes_card",
-        ),
-        dbc.Card(
-            dbc.CardBody(
-                [
-                    html.Div("Value", className="card-title2"),
-                    html.Div(id="P_value2", className="card_info2"),
-                ]
-            ),
-            className="attributes_card",
-        ),
-        dbc.Card(
-            dbc.CardBody(
-                [
-                    html.Div("Position", className="card-title2"),
-                    html.Div(id="P_position2", className="card_info2"),
-                ]
-            ),
-            className="attributes_card",
+        dbc.Col(
+            dbc.Card(
+                dbc.CardBody(
+                    [
+                        html.Div("Skills", className="card-title1"),
+                        dcc.Graph(id="graph_example_3"),
+                    ]
+                ),
+                className="attributes_card",
+            )
         ),
     ]
 )
-cards_3 = dbc.CardDeck(
+cards_4 = dbc.Row(
     [
-        dbc.Card(
-            dbc.CardBody(
-                [
-                    html.Div("Potential", className="card-title1"),
-                    dcc.Graph(id="graph_example_1"),
-                ]
-            ),
-            className="attributes_card",
+        dbc.Col(
+            dbc.Card(
+                dbc.CardBody(
+                    [
+                        html.Div("Skills", className="card-title2"),
+                        dcc.Graph(id="graph_example_4"),
+                    ]
+                ),
+                className="attributes_card",
+            )
         ),
-        dbc.Card(
-            dbc.CardBody(
-                [
-                    html.Div("Skills", className="card-title1"),
-                    dcc.Graph(id="graph_example_3"),
-                ]
-            ),
-            className="attributes_card",
-        ),
-    ]
-)
-cards_4 = dbc.CardDeck(
-    [
-        dbc.Card(
-            dbc.CardBody(
-                [
-                    html.Div("Skills", className="card-title2"),
-                    dcc.Graph(id="graph_example_4"),
-                ]
-            ),
-            className="attributes_card",
-        ),
-        dbc.Card(
-            dbc.CardBody(
-                [
-                    html.Div("Potential", className="card-title2"),
-                    dcc.Graph(id="graph_example_2"),
-                ]
-            ),
-            className="attributes_card",
+        dbc.Col(
+            dbc.Card(
+                dbc.CardBody(
+                    [
+                        html.Div("Potential", className="card-title2"),
+                        dcc.Graph(id="graph_example_2"),
+                    ]
+                ),
+                className="attributes_card",
+            )
         ),
     ]
 )
@@ -442,7 +454,7 @@ tab1_content = (
             dbc.Card(
                 dbc.CardBody(
                     [
-                        html.H1("Player Comparison"),
+                        html.H1("Portfolio Match"),
                         html.Hr(),
                         dbc.Row(
                             [
@@ -616,7 +628,7 @@ def bar_plot(input_value1, input_value2, input_value3, age):
     data_bar1 = dict(
         type="bar",
         y=filtered_by_age_data.groupby("league_name")
-        .median()[input_value1]
+        .median(numeric_only=True)[input_value1]
         .sort_values(ascending=False)
         .head(5),
         x=filtered_by_age_data["league_name"].unique(),
@@ -625,7 +637,7 @@ def bar_plot(input_value1, input_value2, input_value3, age):
     data_bar2 = dict(
         type="bar",
         y=filtered_by_age_data.groupby("league_name")
-        .median()[input_value2]
+        .median(numeric_only=True)[input_value2]
         .sort_values(ascending=False)
         .head(5),
         x=filtered_by_age_data["league_name"].unique(),
@@ -635,7 +647,7 @@ def bar_plot(input_value1, input_value2, input_value3, age):
         dict(
             type="bar",
             y=filtered_by_age_data.groupby("league_name")
-            .median()[input_value3]
+            .median(numeric_only=True)[input_value3]
             .sort_values(ascending=False)
             .head(5),
             x=filtered_by_age_data["league_name"].unique(),
